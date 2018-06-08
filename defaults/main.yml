@@ -1,0 +1,4 @@
+---
+
+websocket_server_root_location: "ansible_env.HOME/websocket-server-binary"
+
