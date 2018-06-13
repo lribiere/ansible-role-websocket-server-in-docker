@@ -1,27 +1,31 @@
 ---
 
-- name : Create websocket-server local binary folder
+- name : Create websocket-server local directories
+  become: true
   file:
-    path: "{{ websocket_server_root_location }}" 
+    path: "{{ item }}" 
     state: directory
-    mode: 0755
+    recurse: true
+  with_items:
+    - "{{ websocket_server_bin_location }}"
+    - "{{ websocket_server_data_location }}"
 
-- name : Copy websocket-server jar file to local binary folder
+- name : Copy websocket-server jar file to local directory
   become: true
   copy:
     src: WebSocket-server-0.1.0.jar
-    dest: "{{ websocket_server_root_location }}/WebSocket-server-0.1.0.jar"
+    dest: "{{ websocket_server_bin_location }}/WebSocket-server-0.1.0.jar"
 
-- name : Copy websocket-server Dockerfile
+- name : Copy websocket-server Dockerfile to local directory
   become: true
   copy:
     src: Dockerfile
-    dest: "{{ websocket_server_root_location }}/Dockerfile"
+    dest: "{{ websocket_server_bin_location }}/Dockerfile"
 
 - name: Build websocket-server image
   become: true
   docker_image:
-     path: "{{ websocket_server_root_location }}"
+     path: "{{ websocket_server_bin_location }}"
      name: websocket-server
 
 - name : Start or restart websocket-server container
@@ -29,4 +33,6 @@
   docker_container:
     name: websocket-server
     image: websocket-server
-
+    network_mode: host
+    volumes:
+      - "{{ websocket_server_data_location }}:/data/todo"
