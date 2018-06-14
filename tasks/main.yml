@@ -13,13 +13,13 @@
 - name : Copy websocket-server jar file to local directory
   become: true
   copy:
-    src: WebSocket-server-0.1.0.jar
+    src: files/WebSocket-server-0.1.0.jar
     dest: "{{ websocket_server_bin_location }}/WebSocket-server-0.1.0.jar"
 
 - name : Copy websocket-server Dockerfile to local directory
   become: true
   copy:
-    src: Dockerfile
+    src: files/Dockerfile
     dest: "{{ websocket_server_bin_location }}/Dockerfile"
 
 - name: Build websocket-server image
@@ -33,6 +33,5 @@
   docker_container:
     name: websocket-server
     image: websocket-server
-    network_mode: host
     volumes:
       - "{{ websocket_server_data_location }}:/data/todo"
