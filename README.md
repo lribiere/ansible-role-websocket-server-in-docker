@@ -21,7 +21,7 @@ Example Playbook
 Tests
 ------------
 
-ansible-playbook tests/test.yml --ask-become-pass -e websocket_server_root_location="$(PWD)/.workdir/"
+ansible-playbook tests/test.yml --ask-become-pass -e websocket_server_root_location="$(PWD)/.workdir"
 
 License
 -------

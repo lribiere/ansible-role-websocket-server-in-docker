@@ -33,5 +33,6 @@
   docker_container:
     name: websocket-server
     image: websocket-server
+    networks: "{{ websocket_server_docker_networks }}"
     volumes:
       - "{{ websocket_server_data_location }}:/data/todo"

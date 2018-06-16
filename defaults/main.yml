@@ -6,3 +6,5 @@ websocket_server_root_location: "/opt/docker-data/{{ websocket_server_container_
 websocket_server_bin_location: "{{ websocket_server_root_location }}/bin"
 websocket_server_data_location: "{{ websocket_server_root_location }}/data/todo"
 
+websocket_server_docker_networks: []
+
