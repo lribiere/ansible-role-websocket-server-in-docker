@@ -7,32 +7,26 @@
     state: directory
     recurse: true
   with_items:
-    - "{{ websocket_server_bin_location }}"
+    - "{{ websocket_server_conf_location }}"
     - "{{ websocket_server_data_location }}"
 
-- name : Copy websocket-server jar file to local directory
+- name : Copy templated configuration file
   become: true
-  copy:
-    src: files/WebSocket-server-0.1.0.jar
-    dest: "{{ websocket_server_bin_location }}/WebSocket-server-0.1.0.jar"
+  template: src=templates/config_file.j2 dest="{{ websocket_server_conf_location }}/wsserver.properties" mode=0644
 
-- name : Copy websocket-server Dockerfile to local directory
-  become: true
-  copy:
-    src: files/Dockerfile
-    dest: "{{ websocket_server_bin_location }}/Dockerfile"
-
-- name: Build websocket-server image
+- name: Pull aura-websocket-server docker image
   become: true
   docker_image:
-     path: "{{ websocket_server_bin_location }}"
-     name: websocket-server
+     name: elrib/aura_websocket_server
 
-- name : Start or restart websocket-server container
+- name : Start or restart aura-websocket-server docker container
   become: true
   docker_container:
-    name: websocket-server
-    image: websocket-server
+    name: wsserver
+    image: elrib/aura_websocket_server
+    recreate: true
     networks: "{{ websocket_server_docker_networks }}"
     volumes:
       - "{{ websocket_server_data_location }}:/data/todo"
+      - "{{ websocket_server_conf_location }}/wsserver.properties:/home/conf/wsserver.properties:ro"
+

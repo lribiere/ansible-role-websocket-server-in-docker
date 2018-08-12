@@ -3,8 +3,11 @@
 websocket_server_container_name: "websocket-server"
 
 websocket_server_root_location: "/opt/docker-data/{{ websocket_server_container_name }}"
-websocket_server_bin_location: "{{ websocket_server_root_location }}/bin"
+websocket_server_conf_location: "{{ websocket_server_root_location }}/conf"
 websocket_server_data_location: "{{ websocket_server_root_location }}/data/todo"
+
+write_path: "/data/todo/"
+wsserver_port: "8887"
 
 websocket_server_docker_networks: []
 
